@@ -16,7 +16,14 @@ function sketchEntries() {
   );
 }
 
+// In GitHub Actions, GITHUB_REPOSITORY is "owner/repo" — use the repo name as base.
+// Locally there's no env var so base stays '/'.
+const base = process.env.GITHUB_REPOSITORY
+  ? `/${process.env.GITHUB_REPOSITORY.split('/')[1]}/`
+  : '/';
+
 export default defineConfig({
+  base,
   build: {
     rollupOptions: {
       input: {

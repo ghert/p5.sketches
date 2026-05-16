@@ -1,0 +1,18 @@
+{
+  "name": "p5-sketches",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "new": "node scripts/new-sketch.js"
+  },
+  "dependencies": {
+    "p5": "^1.11.3",
+    "tweakpane": "^4.0.5"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  }
+}

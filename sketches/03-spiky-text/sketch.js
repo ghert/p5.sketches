@@ -2,20 +2,33 @@ import { createSketch } from "/shared/sketch-wrapper.js";
 import meta from "./meta.js";
 
 const PARAMS = {
-  text: "bubble",
-  background: { r: 255, g: 255, b: 100 },
-  color: { r: 255, g: 0, b: 0 },
-  fontSize: 140,
+  text: "helllo",
+  background: { r: 50, g: 30, b: 190 },
+  color: { r: 255, g: 255, b: 100 },
+  fontSize: 170,
 };
 
 createSketch(
   (p, pane) => {
     // Bind params to the pane:
     // pane.addBinding(PARAMS, 'speed', { min: 0, max: 5 });
-    //
+    let font;
+    let points;
+    let points2;
+    let bounds;
+
     const redrawText = ({ value, last }) => {
       bounds = font.textBounds(PARAMS.text, 0, 0, PARAMS.fontSize);
       points = font.textToPoints(
+        PARAMS.text,
+        p.windowWidth / 2 - bounds.w / 2,
+        p.windowHeight / 2 + bounds.h / 2,
+        PARAMS.fontSize,
+        {
+          sampleFactor: 0.15,
+        },
+      );
+      points2 = font.textToPoints(
         PARAMS.text,
         p.windowWidth / 2 - bounds.w / 2,
         p.windowHeight / 2 + bounds.h / 2,
@@ -29,10 +42,6 @@ createSketch(
     pane.addBinding(PARAMS, "background");
     pane.addBinding(PARAMS, "color");
     pane.addBinding(PARAMS, "fontSize").on("change", redrawText);
-
-    let font;
-    let points;
-    let bounds;
 
     p.preload = () => {
       font = p.loadFont("/font.ttf");
@@ -50,6 +59,15 @@ createSketch(
           sampleFactor: 0.15,
         },
       );
+      points2 = font.textToPoints(
+        PARAMS.text,
+        p.windowWidth / 2 - bounds.w / 2,
+        p.windowHeight / 2 + bounds.h / 2,
+        PARAMS.fontSize,
+        {
+          sampleFactor: 0.15,
+        },
+      );
 
       p.background(255, 255, 100);
       p.createCanvas(p.windowWidth, p.windowHeight);
@@ -57,32 +75,54 @@ createSketch(
 
     p.draw = () => {
       const step = (((p.frameCount * 3) % 400) / 100) % 4;
+      const step2 = (((p.frameCount * 3) % 300) / 100) % 3;
       p.background(
         PARAMS.background.r,
         PARAMS.background.g,
         PARAMS.background.b,
       );
+      p.stroke("black");
       for (let i = 1; i < points.length - 2; i += 1) {
         if (step < 2) {
-          points[i].x = points[i].x + p.cos(i * 5) / 4;
+          points[i].x = points[i].x + p.cos(i * 2 + i) / 3 / 1.5;
         } else {
-          points[i].x = points[i].x - p.cos(i * 5) / 4;
+          points[i].x = points[i].x - p.cos(i * 2 + i) / 3 / 1.5;
         }
-        if (step > 0.5 && step < 2.5) {
-          points[i].y = points[i].y + p.sin(i * 5) / 4;
+        if (step2 > 0 && step2 <= 1.5) {
+          points[i].y = points[i].y - p.sin(i * 2 + i) / 3 / 1.5;
         } else {
-          points[i].y = points[i].y - p.sin(i * 5) / 4;
+          points[i].y = points[i].y + p.sin(i * 2 + i) / 3 / 1.5;
+        }
+      }
+      for (let i = 1; i < points.length - 2; i += 1) {
+        if (step < 2) {
+          points2[i].x = points2[i].x + p.cos(i * 2 + i) / 3 / 1.5;
+        } else {
+          points2[i].x = points2[i].x - p.cos(i * 2 + i) / 3 / 1.5;
+        }
+        if (step2 > 0 && step2 <= 1.5) {
+          points2[i].y = points2[i].y + p.sin(i * 2 + i) / 3 / 1.5;
+        } else {
+          points2[i].y = points2[i].y - p.sin(i * 2 + i) / 3 / 1.5;
         }
       }
       p.stroke(PARAMS.color.r, PARAMS.color.g, PARAMS.color.b);
-      p.strokeWeight(2);
+      p.strokeWeight(3);
       p.strokeJoin(p.ROUND);
       for (let i = 1; i < points.length - 2; i += 1) {
         if (
-          Math.abs(points[i].x - points[i + 1].x) < 32 &&
-          Math.abs(points[i].y - points[i + 1].y) < 32
+          Math.abs(points2[i].x - points2[i + 1].x) < 38 &&
+          Math.abs(points2[i].y - points2[i + 1].y) < 38
         ) {
-          p.line(points[i].x, points[i].y, points[i + 1].x, points[i + 1].y);
+          p.stroke(255, 255, 100, 255);
+          p.line(points[i].x, points[i].y, points2[i].x, points2[i].y);
+          p.stroke(255, 255, 0, 255);
+          p.line(
+            points2[i].x,
+            points2[i].y,
+            points2[i + 1].x,
+            points2[i + 1].y,
+          );
         }
       }
     };

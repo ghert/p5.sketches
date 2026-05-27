@@ -84,29 +84,29 @@ createSketch(
       p.stroke("black");
       for (let i = 1; i < points.length - 2; i += 1) {
         if (step < 2) {
-          points[i].x = points[i].x + p.cos(i * 2 + i) / 3 / 1.5;
+          points[i].x = points[i].x + p.cos(i * 2 + i) / 4.5;
         } else {
-          points[i].x = points[i].x - p.cos(i * 2 + i) / 3 / 1.5;
+          points[i].x = points[i].x - p.cos(i * 2 + i) / 4.5;
         }
         if (step2 > 0 && step2 <= 1.5) {
-          points[i].y = points[i].y - p.sin(i * 2 + i) / 3 / 1.5;
+          points[i].y = points[i].y - p.sin(i * 2 + i) / 4.5;
         } else {
-          points[i].y = points[i].y + p.sin(i * 2 + i) / 3 / 1.5;
+          points[i].y = points[i].y + p.sin(i * 2 + i) / 4.5;
         }
       }
       for (let i = 1; i < points.length - 2; i += 1) {
         if (step < 2) {
-          points2[i].x = points2[i].x + p.cos(i * 2 + i) / 3 / 1.5;
+          points2[i].x = points2[i].x + p.cos(i * 2 + i) / 4.5;
         } else {
-          points2[i].x = points2[i].x - p.cos(i * 2 + i) / 3 / 1.5;
+          points2[i].x = points2[i].x - p.cos(i * 2 + i) / 4.5;
         }
         if (step2 > 0 && step2 <= 1.5) {
-          points2[i].y = points2[i].y + p.sin(i * 2 + i) / 3 / 1.5;
+          points2[i].y = points2[i].y + p.sin(i * 2 + i) / 4.5;
         } else {
-          points2[i].y = points2[i].y - p.sin(i * 2 + i) / 3 / 1.5;
+          points2[i].y = points2[i].y - p.sin(i * 2 + i) / 4.5;
         }
       }
-      p.stroke(PARAMS.color.r, PARAMS.color.g, PARAMS.color.b);
+
       p.strokeWeight(3);
       p.strokeJoin(p.ROUND);
       for (let i = 1; i < points.length - 2; i += 1) {
@@ -114,9 +114,9 @@ createSketch(
           Math.abs(points2[i].x - points2[i + 1].x) < 38 &&
           Math.abs(points2[i].y - points2[i + 1].y) < 38
         ) {
-          p.stroke(255, 255, 100, 255);
-          p.line(points[i].x, points[i].y, points2[i].x, points2[i].y);
-          p.stroke(255, 255, 0, 255);
+          p.stroke(PARAMS.color.r, PARAMS.color.g, PARAMS.color.b);
+          //p.line(points[i].x, points[i].y, points2[i].x, points2[i].y);
+          p.stroke(PARAMS.color.r, PARAMS.color.g, PARAMS.color.b);
           p.line(
             points2[i].x,
             points2[i].y,
